@@ -127,7 +127,7 @@ const PLACES = [
 
 export function DesertOfMemories() {
   const [sel, setSel] = useState(0);
-  const p = PLACES[sel];
+  const p = PLACES[sel]!;
   return (
     <Chapter id="map" label="MERIDIANI · ORBITAL MAP" mood="explore" dark={0.75} className="px-8 py-32 md:px-24">
       <ChapterTag n="04" title="The desert of memories" />

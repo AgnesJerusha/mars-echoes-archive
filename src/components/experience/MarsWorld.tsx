@@ -43,7 +43,7 @@ function Terrain() {
   const geo = useMemo(() => {
     const g = new THREE.PlaneGeometry(320, 320, 240, 240);
     g.rotateX(-Math.PI / 2);
-    const pos = g.attributes.position;
+    const pos = g.getAttribute("position") as THREE.BufferAttribute;
     const colors = new Float32Array(pos.count * 3);
     const low = new THREE.Color("#5a2a17"), mid = new THREE.Color("#a5552c"), high = new THREE.Color("#d39a64");
     const tmp = new THREE.Color();
@@ -72,7 +72,7 @@ function Rocks() {
   const count = 260;
   useMemo(() => null, []);
   const set = (m: THREE.InstancedMesh | null) => {
-    if (!m || m.userData.done) return;
+    if (!m || m.userData["done"]) return;
     const o = new THREE.Object3D();
     for (let i = 0; i < count; i++) {
       const x = (hash(i, 1) - 0.5) * 120, z = -hash(i, 2) * 110 + 20;
@@ -84,7 +84,7 @@ function Rocks() {
       m.setMatrixAt(i, o.matrix);
     }
     m.instanceMatrix.needsUpdate = true;
-    m.userData.done = true;
+    m.userData["done"] = true;
     (ref as React.MutableRefObject<THREE.InstancedMesh | null>).current = m;
   };
   return (
@@ -112,14 +112,15 @@ function Dust() {
     const p = ref.current;
     if (!p) return;
     const s = store.get().storm;
-    const arr = p.geometry.attributes.position.array as Float32Array;
+    const attr = p.geometry.getAttribute("position") as THREE.BufferAttribute;
+    const arr = attr.array as Float32Array;
     const wind = 1.5 + s * 22;
     for (let i = 0; i < N; i++) {
-      arr[i * 3] += wind * dt * (0.6 + (i % 7) * 0.1);
-      arr[i * 3 + 1] += Math.sin(i + arr[i * 3] * 0.1) * dt * 0.3;
-      if (arr[i * 3] > 40) arr[i * 3] = -40;
+      arr[i * 3]! += wind * dt * (0.6 + (i % 7) * 0.1);
+      arr[i * 3 + 1]! += Math.sin(i + arr[i * 3]! * 0.1) * dt * 0.3;
+      if (arr[i * 3]! > 40) arr[i * 3] = -40;
     }
-    p.geometry.attributes.position.needsUpdate = true;
+    attr.needsUpdate = true;
     const m = p.material as THREE.PointsMaterial;
     m.opacity = 0.25 + s * 0.6;
     m.size = 0.06 + s * 0.12;

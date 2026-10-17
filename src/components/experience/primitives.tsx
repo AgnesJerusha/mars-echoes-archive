@@ -13,10 +13,10 @@ export function Chapter({
     if (!el) return;
     const io = new IntersectionObserver(
       ([e]) => {
-        if (!e.isIntersecting) return;
+        if (!e?.isIntersecting) return;
         const cur = store.get();
-        const patch: Record<string, unknown> = { chapter: label, dark, signal };
-        if (mood !== "storm") patch.storm = storm;
+        const patch: Partial<ReturnType<typeof store.get>> = { chapter: label, dark, signal };
+        if (mood !== "storm") patch["storm"] = storm;
         store.set(patch);
         if (audio.mood !== mood && !(cur.chapter === label)) audio.setMood(mood);
       },

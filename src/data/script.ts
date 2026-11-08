@@ -608,10 +608,12 @@ export function getSlide(id: number): Slide {
 
 export function nextSlideId(id: number): number | null {
   const idx = PLAYABLE_SLIDES.findIndex((s) => s.id === id);
-  return idx >= 0 && idx < PLAYABLE_SLIDES.length - 1 ? PLAYABLE_SLIDES[idx + 1].id : null;
+  const next = idx >= 0 ? PLAYABLE_SLIDES[idx + 1] : undefined;
+  return next ? next.id : null;
 }
 
 export function prevSlideId(id: number): number | null {
   const idx = PLAYABLE_SLIDES.findIndex((s) => s.id === id);
-  return idx > 0 ? PLAYABLE_SLIDES[idx - 1].id : null;
+  const prev = idx > 0 ? PLAYABLE_SLIDES[idx - 1] : undefined;
+  return prev ? prev.id : null;
 }

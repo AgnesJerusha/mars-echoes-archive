@@ -39,7 +39,7 @@ export function useTyping(text: string, active: boolean, onDone: () => void) {
         timer = setTimeout(() => doneRef.current(), 300);
         return;
       }
-      const ch = text[i - 1];
+      const ch = text.charAt(i - 1);
       timer = setTimeout(step, CHAR_MS + (PAUSE_AFTER[ch] ?? 0));
     };
     timer = setTimeout(step, CHAR_MS);
